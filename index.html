@@ -13,9 +13,8 @@
     <p>Wins: <span id="wins"></span></p>
     <p>Losses: <span id="losses"></span></p>
     <p>Guesses Left <span id="guessLeft"></span></p>
-    <p>Your Guesses so far: <span id="yourGuessSoFar"></span></p>
+    <p>Your Guesses so far:<span id="guessSoFar"></span></p>
 </div>
-
 
   <script type="text/javascript">
 
@@ -25,19 +24,24 @@
     var losses = 0;
     var guesses = 9;
     var guessLeft = 9;
-    var guessedLetters = [];
+    var guessSoFar = [];
     var letterToGuess = 0;
 
-   
+    var updateGuessSoFar = function() {
+    document.querySelector('#let').innerHTML = guessSoFar.join(', ');
+    }
+
+    var computerGuess = computerOptions[Math.floor(Math.random() * computerOptions.length)];
 
     // When a key is pressed. 
     
         document.onkeyup = function(event) {
+        var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
         var computerGuess = computerOptions[Math.floor(Math.random() * computerOptions.length)];
-        guessLeft--;
-        var userGuess = event.key;
+
+        guessSoFar.push(userGuess);
+
         document.getElementById("guessLeft").innerHTML = guessLeft;
-        document.getElementById("yourGuessSoFar").innerHTML = userGuess + " ,";
 
         console.log(userGuess);
         console.log(computerGuess);
@@ -46,13 +50,23 @@
     
     if  (userGuess === computerGuess){
             wins++;
-    } else if   (userGuess != computerGuess){
-                losses++;
+            guessLeft = 9;
+            guessSoFar.length = 0;
+    }
+    else if (guessLeft == 0){
+            losses++;
+            guessLeft = 9;
+            guessSoFar.lenght = 0;
+    } 
+    
+    else if   (userGuess != computerGuess){
+                guessLeft--;
     }
     
     document.getElementById("losses").innerHTML = losses;
     document.getElementById("wins").innerHTML = wins;
-
+    document.getElementById("guessSoFar").innerHTML = guessSoFar;
+    
     };
 
     
